@@ -3,6 +3,8 @@ package com.piercestudio.santabomb;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,6 +17,8 @@ public class PhotoOverlayActivity extends Activity
 {
 	private String TAG = "photooverlayactivity TAG";
 
+	Bitmap baseImage;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -22,10 +26,11 @@ public class PhotoOverlayActivity extends Activity
 		setContentView(R.layout.photo_overlay_activity);
 
 
-		Bitmap baseImage = getBaseImage();
+		baseImage = getBaseImage();
 
 		ImageView imageView = (ImageView) findViewById(R.id.imageView);
-		imageView.setImageBitmap(baseImage);
+//		imageView.setImageBitmap(baseImage);
+		imageView.setImageBitmap(drawSantaOnImage(baseImage, R.drawable.santa1));
 	}
 
 	private Bitmap getBaseImage(){
@@ -43,5 +48,17 @@ public class PhotoOverlayActivity extends Activity
 			Log.i(TAG, "error retrieving file");
 		}
 		return null;
+	}
+
+	private Bitmap drawSantaOnImage(Bitmap bitmap, int drawableId){
+		Bitmap overlayBitmap = BitmapFactory.decodeResource(this.getResources(), drawableId);
+		Canvas canvas = new Canvas(bitmap);
+//		canvas.drawBitmap(bitmap, 0, 0, null);
+		canvas.drawBitmap(overlayBitmap, 0, 0, null);
+		return bitmap;
+	}
+
+	private BitmapDrawable getBitmapDrawable(){
+		return new BitmapDrawable(getResources(), getBaseImage());
 	}
 }
