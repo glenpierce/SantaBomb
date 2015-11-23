@@ -29,8 +29,8 @@ public class PhotoOverlayActivity extends Activity
 		baseImage = getBaseImage();
 
 		ImageView imageView = (ImageView) findViewById(R.id.imageView);
-//		imageView.setImageBitmap(baseImage);
-		imageView.setImageBitmap(drawSantaOnImage(baseImage, R.drawable.santa1));
+		imageView.setImageBitmap(baseImage);
+//		imageView.setImageBitmap(drawSantaOnImage(baseImage, R.drawable.santa1));
 	}
 
 	private Bitmap getBaseImage(){
