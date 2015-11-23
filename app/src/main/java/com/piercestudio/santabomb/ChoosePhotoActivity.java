@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,6 +19,7 @@ public class ChoosePhotoActivity extends AppCompatActivity
 
 	static final int REQUEST_CODE_SELECT_PHOTO = 0;
 	static final int REQUEST_CODE_TAKE_PHOTO = 1;
+	String imageFilePath;
 	String mCurrentPhotoPath;
 
 	@Override
@@ -63,6 +63,7 @@ public class ChoosePhotoActivity extends AppCompatActivity
 		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 			File photoFile = null;
 			photoFile = createImageFile();
+			imageFilePath = photoFile.getPath();
 			if (photoFile != null) {
 				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
 				startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PHOTO);
@@ -75,10 +76,7 @@ public class ChoosePhotoActivity extends AppCompatActivity
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 			String imageFileName = "JPEG_" + timeStamp;
 			File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-			File image = new File(storageDir, imageFileName + ".jpg");
-			Log.i(TAG, image.getAbsolutePath());
-
-			return image;
+			return new File(storageDir, imageFileName + ".jpg");
 	}
 
 	@Override
@@ -87,19 +85,26 @@ public class ChoosePhotoActivity extends AppCompatActivity
 		if (resultCode == RESULT_OK)
 		{
 			super.onActivityResult(requestCode, resultCode, data);
-			if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
-				Uri imageUri = (Uri) data.getExtras().get(MediaStore.EXTRA_OUTPUT);
-				startPhotoOverlayActivity(imageUri);
-			}else if (requestCode == REQUEST_CODE_SELECT_PHOTO) {
+			if (requestCode == REQUEST_CODE_TAKE_PHOTO)
+			{
+				startPhotoOverlayActivityFromPath(imageFilePath);
+			}else if (requestCode == REQUEST_CODE_SELECT_PHOTO)
+			{
 				Uri imageUri = (Uri) data.getData();
-				startPhotoOverlayActivity(imageUri);
+				startPhotoOverlayActivityFromImageUri(imageUri);
 			}
 		}
 	}
 
-	private void startPhotoOverlayActivity(Uri imageUri){
+	private void startPhotoOverlayActivityFromImageUri(Uri imageUri){
 		Intent intent = new Intent(this, PhotoOverlayActivity.class);
 		intent.setData(imageUri);
+		startActivity(intent);
+	}
+
+	private void startPhotoOverlayActivityFromPath(String path){
+		Intent intent = new Intent(this, PhotoOverlayActivity.class);
+		intent.putExtra("filePath", path);
 		startActivity(intent);
 	}
 }
