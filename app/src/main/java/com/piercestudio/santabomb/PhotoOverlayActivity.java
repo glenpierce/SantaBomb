@@ -17,8 +17,17 @@ import java.io.IOException;
 
 public class PhotoOverlayActivity extends Activity
 {
+
 	private String TAG = "photooverlayactivity TAG";
 
+	int x = 0;
+	int y = 0;
+	int scaleWidth = 20;
+	int scaleHeight = 20;
+
+	int touchOffset = 200;
+
+	ImageView imageView;
 	Bitmap baseImage;
 	int santaImageResourceId;
 
@@ -30,7 +39,7 @@ public class PhotoOverlayActivity extends Activity
 
 		baseImage = getBaseImage();
 
-		ImageView imageView = (ImageView) findViewById(R.id.imageView);
+		imageView = (ImageView) findViewById(R.id.imageView);
 		santaImageResourceId = R.drawable.santa1;
 
 		imageView.setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, 0, 0));
@@ -95,28 +104,24 @@ public class PhotoOverlayActivity extends Activity
 	}
 
 	View.OnTouchListener moveSantaListener = new View.OnTouchListener() {
-		int startingX;
-		int startingY;
 		boolean touchStateScale = false;
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				startingX = (int) event.getX();
-				startingY = (int) event.getY();
+				x = (int) event.getX() - touchOffset;
+				y = (int) event.getY() - touchOffset;
 
-				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, startingX, startingY));
+				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y));
 			}
 			if(event.getAction() == MotionEvent.ACTION_MOVE) {
-				int scaleWidth = 20;
-				int scaleHeight = 20;
 				if(touchStateScale == true){
 					scaleWidth = (int) (event.getX(0) - event.getX(1));
 					scaleHeight = (int) (event.getY(0) - event.getY(1));
 				}
-				int endingX = (int) event.getX();
-				int endingY = (int) event.getY();
+				x = (int) event.getX() - touchOffset;
+				y = (int) event.getY() - touchOffset;
 
-				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, endingX, endingY, scaleHeight, scaleWidth));
+				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 			}
 			if(event.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN){
 				Log.i(TAG, "second pointer detected");
@@ -138,27 +143,35 @@ public class PhotoOverlayActivity extends Activity
 		switch(v.getTag().toString()){
 			case "santa1":
 				santaImageResourceId = R.drawable.santa1;
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 			case "santa2":
 				santaImageResourceId = R.drawable.santa2;
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 			case "santa3":
 				santaImageResourceId = R.drawable.santa3;
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 			case "santa4":
 				santaImageResourceId = R.drawable.santa4;
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 			case "santa5":
 				santaImageResourceId = R.drawable.santa5;
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 			case "santa6":
 				santaImageResourceId = R.drawable.santa6;
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 			case "santa7":
 				santaImageResourceId = R.drawable.santa7;
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 			case "santa8":
 				santaImageResourceId = R.drawable.santa8;
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 		}
 	}

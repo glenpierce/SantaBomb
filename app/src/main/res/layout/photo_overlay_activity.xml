@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/santa1"
+            android:src="@drawable/santa1thumb"
             android:tag="santa1"
             android:onClick="onSantaClick"
             />
@@ -34,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/santa2"
+            android:src="@drawable/santa2thumb"
             android:tag="santa2"
             android:onClick="onSantaClick"
             />
@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/santa3"
+            android:src="@drawable/santa3thumb"
             android:tag="santa3"
             android:onClick="onSantaClick"
             />
@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/santa4"
+            android:src="@drawable/santa4thumb"
             android:tag="santa4"
             android:onClick="onSantaClick"
             />
@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/santa5"
+            android:src="@drawable/santa5thumb"
             android:tag="santa5"
             android:onClick="onSantaClick"
             />
@@ -71,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/santa6"
+            android:src="@drawable/santa6thumb"
             android:tag="santa6"
             android:onClick="onSantaClick"
             />
@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/santa7"
+            android:src="@drawable/santa7thumb"
             android:tag="santa7"
             android:onClick="onSantaClick"
             />
@@ -89,21 +89,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/santa8"
+            android:src="@drawable/santa8thumb"
             android:tag="santa8"
             android:onClick="onSantaClick"
             />
-
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/santa4"
-            />
-
-
-
 
     </LinearLayout>
 
