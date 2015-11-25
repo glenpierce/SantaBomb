@@ -28,18 +28,12 @@ public class PhotoOverlayActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.photo_overlay_activity);
 
-
 		baseImage = getBaseImage();
 
 		ImageView imageView = (ImageView) findViewById(R.id.imageView);
-		ImageView santaImageView = (ImageView) findViewById(R.id.santaImageView);
-		santaImageResourceId = R.drawable.smiley;
+		santaImageResourceId = R.drawable.santa1;
 
-		santaImageView.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), santaImageResourceId));
-
-		imageView.setImageBitmap(baseImage);
 		imageView.setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, 0, 0));
-
 		imageView.setOnTouchListener(moveSantaListener);
 
 	}
@@ -113,16 +107,16 @@ public class PhotoOverlayActivity extends Activity
 				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, startingX, startingY));
 			}
 			if(event.getAction() == MotionEvent.ACTION_MOVE) {
-				int scaleX = 20;
-				int scaleY = 20;
+				int scaleWidth = 20;
+				int scaleHeight = 20;
 				if(touchStateScale == true){
-					scaleX = (int) (event.getX(0) - event.getX(1));
-					scaleY = (int) (event.getY(0) - event.getY(1));
+					scaleWidth = (int) (event.getX(0) - event.getX(1));
+					scaleHeight = (int) (event.getY(0) - event.getY(1));
 				}
 				int endingX = (int) event.getX();
 				int endingY = (int) event.getY();
 
-				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, endingX, endingY, scaleX, scaleY));
+				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, endingX, endingY, scaleHeight, scaleWidth));
 			}
 			if(event.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN){
 				Log.i(TAG, "second pointer detected");
@@ -139,4 +133,33 @@ public class PhotoOverlayActivity extends Activity
 			return true;
 		}
 	};
+
+	public void onSantaClick(View v) {
+		switch(v.getTag().toString()){
+			case "santa1":
+				santaImageResourceId = R.drawable.santa1;
+				break;
+			case "santa2":
+				santaImageResourceId = R.drawable.santa2;
+				break;
+			case "santa3":
+				santaImageResourceId = R.drawable.santa3;
+				break;
+			case "santa4":
+				santaImageResourceId = R.drawable.santa4;
+				break;
+			case "santa5":
+				santaImageResourceId = R.drawable.santa5;
+				break;
+			case "santa6":
+				santaImageResourceId = R.drawable.santa6;
+				break;
+			case "santa7":
+				santaImageResourceId = R.drawable.santa7;
+				break;
+			case "santa8":
+				santaImageResourceId = R.drawable.santa8;
+				break;
+		}
+	}
 }
