@@ -1,6 +1,8 @@
 package com.piercestudio.santabomb;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,8 +13,11 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PhotoOverlayActivity extends Activity
@@ -24,8 +29,6 @@ public class PhotoOverlayActivity extends Activity
 	int y = 0;
 	int scaleWidth = 20;
 	int scaleHeight = 20;
-
-	int touchOffset = 200;
 
 	ImageView imageView;
 	Bitmap baseImage;
@@ -40,10 +43,13 @@ public class PhotoOverlayActivity extends Activity
 		baseImage = getBaseImage();
 
 		imageView = (ImageView) findViewById(R.id.imageView);
-		santaImageResourceId = R.drawable.santa1;
+		santaImageResourceId = R.drawable.santa2;
 
 		imageView.setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, 0, 0));
 		imageView.setOnTouchListener(moveSantaListener);
+
+		Button sendButton = (Button) findViewById(R.id.sendButton);
+		sendButton.setOnClickListener(sendOnClickListener);
 
 	}
 
@@ -105,11 +111,12 @@ public class PhotoOverlayActivity extends Activity
 
 	View.OnTouchListener moveSantaListener = new View.OnTouchListener() {
 		boolean touchStateScale = false;
+		int startingX, startingY;
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				x = (int) event.getX() - touchOffset;
-				y = (int) event.getY() - touchOffset;
+				startingX = (int) event.getX();
+				startingY = (int) event.getY();
 
 				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y));
 			}
@@ -118,8 +125,11 @@ public class PhotoOverlayActivity extends Activity
 					scaleWidth = (int) (event.getX(0) - event.getX(1));
 					scaleHeight = (int) (event.getY(0) - event.getY(1));
 				}
-				x = (int) event.getX() - touchOffset;
-				y = (int) event.getY() - touchOffset;
+				int endingX = (int) event.getX();
+				int endingY = (int) event.getY();
+
+				x = x + endingX - startingX;
+				y = y + endingY - startingY;
 
 				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 			}
@@ -174,5 +184,34 @@ public class PhotoOverlayActivity extends Activity
 				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 				break;
 		}
+	}
+
+	View.OnClickListener sendOnClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			Intent share = new Intent(Intent.ACTION_SEND);
+			share.setType("image/*");
+
+			Uri uri = getImageUri(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+
+			share.putExtra(Intent.EXTRA_STREAM, uri);
+
+			startActivity(Intent.createChooser(share, "Share!"));
+		}
+	};
+
+	public Uri getImageUri(Bitmap bitmap) {
+		File file = new File(getApplication().getFilesDir(), "Santa" + ".jpeg");
+		try {
+			FileOutputStream out = getApplication().openFileOutput(file.getName(), Context.MODE_WORLD_READABLE);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+			out.flush();
+			out.close();
+		} catch (Exception e){
+			Log.i(TAG, "getImageUri Exception");
+		}
+		String realPath = file.getAbsolutePath();
+		File f = new File(realPath);
+		return Uri.fromFile(f);
 	}
 }

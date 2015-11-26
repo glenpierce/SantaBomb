@@ -3,8 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/backgroundlowres"
-    >
+              android:background="@drawable/backgroundlowres">
 
     <ImageView
         android:layout_width="match_parent"
@@ -19,29 +18,42 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:background="#50FFFFFF">
+
+        <!--<ImageView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:src="@drawable/santa1thumb"-->
+            <!--android:tag="santa1"-->
+            <!--android:onClick="onSantaClick"-->
+            <!--/>-->
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="6dp"
             android:layout_weight="1"
-            android:src="@drawable/santa1thumb"
-            android:tag="santa1"
+            android:src="@drawable/santa8thumb"
+            android:tag="santa8"
             android:onClick="onSantaClick"
             />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="6dp"
             android:layout_weight="1"
-            android:src="@drawable/santa2thumb"
-            android:tag="santa2"
+            android:src="@drawable/santa6thumb"
+            android:tag="santa6"
             android:onClick="onSantaClick"
             />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="6dp"
             android:layout_weight="1"
             android:src="@drawable/santa3thumb"
             android:tag="santa3"
@@ -52,6 +64,7 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="6dp"
             android:layout_weight="1"
             android:src="@drawable/santa4thumb"
             android:tag="santa4"
@@ -61,6 +74,7 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="6dp"
             android:layout_weight="1"
             android:src="@drawable/santa5thumb"
             android:tag="santa5"
@@ -70,27 +84,19 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/santa6thumb"
-            android:tag="santa6"
-            android:onClick="onSantaClick"
-            />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
             android:layout_weight="1"
             android:src="@drawable/santa7thumb"
             android:tag="santa7"
             android:onClick="onSantaClick"
             />
-
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="6dp"
             android:layout_weight="1"
-            android:src="@drawable/santa8thumb"
-            android:tag="santa8"
+            android:src="@drawable/santa2thumb"
+            android:tag="santa2"
             android:onClick="onSantaClick"
             />
 
@@ -105,13 +111,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send"
-        />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
+        android:background="@drawable/send"
+        android:id="@+id/sendButton"
         />
 
     </LinearLayout>
