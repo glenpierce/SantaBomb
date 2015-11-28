@@ -27,8 +27,8 @@ public class PhotoOverlayActivity extends Activity
 
 	int x = 0;
 	int y = 0;
-	int scaleWidth = 20;
-	int scaleHeight = 20;
+	int scaleSensitivity = 10;
+	int scale = scaleSensitivity;
 
 	ImageView imageView;
 	Bitmap baseImage;
@@ -83,12 +83,12 @@ public class PhotoOverlayActivity extends Activity
 		return bitmapToReturn;
 	}
 
-	private Bitmap drawSantaOnImage(Bitmap bitmap, int drawableId, int x, int y, int height, int width){
+	private Bitmap drawSantaOnImage(Bitmap bitmap, int drawableId, int x, int y, int scale){
 		BitmapFactory.Options opt = new BitmapFactory.Options();
 		opt.inMutable = true;
 		Bitmap overlayBitmap = BitmapFactory.decodeResource(this.getResources(), drawableId, opt);
 //		This is causing an out of memory error, scaling is costing us too much memory
-//		overlayBitmap = scaleBitmap(overlayBitmap, height, width);
+		overlayBitmap = scaleBitmap(overlayBitmap, scale);
 		Bitmap bitmapToReturn = Bitmap.createBitmap(bitmap);
 		Canvas canvas = new Canvas(bitmapToReturn);
 		canvas.drawBitmap(bitmap, 0, 0, null);
@@ -96,11 +96,11 @@ public class PhotoOverlayActivity extends Activity
 		return bitmapToReturn;
 	}
 
-	private Bitmap scaleBitmap(Bitmap bitmap, int height, int width){
+	private Bitmap scaleBitmap(Bitmap bitmap, int scale){
 		int startingHeight = bitmap.getHeight();
 		int startingWidth = bitmap.getWidth();
-		int endingHeight = startingHeight * height/20;
-		int endingWidth = startingWidth * width/20;
+		int endingHeight = startingHeight * scale/scaleSensitivity;
+		int endingWidth = startingWidth * scale/scaleSensitivity;
 		bitmap = Bitmap.createScaledBitmap(bitmap, endingWidth, endingHeight, false);
 		return bitmap;
 	}
@@ -114,24 +114,39 @@ public class PhotoOverlayActivity extends Activity
 		int startingX, startingY;
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
+
+			int fingerDistance = 0;
+
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				startingX = (int) event.getX();
 				startingY = (int) event.getY();
-
-				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y));
 			}
 			if(event.getAction() == MotionEvent.ACTION_MOVE) {
 				if(touchStateScale == true){
-					scaleWidth = (int) (event.getX(0) - event.getX(1));
-					scaleHeight = (int) (event.getY(0) - event.getY(1));
+					if(fingerDistance == 0) {
+						fingerDistance = (int) (event.getX(0) - event.getX(1));
+					} else {
+						int newFingerDistance = (int) (event.getX(0) - event.getX(1));
+						if(newFingerDistance > fingerDistance){
+							scale++;
+							Log.i(TAG, "scale++");
+						}
+						if(newFingerDistance < fingerDistance){
+							scale--;
+							Log.i(TAG, "scale--");
+						}
+						fingerDistance = newFingerDistance;
+					}
+					((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
+				} else {
+					int endingX = (int) event.getX();
+					int endingY = (int) event.getY();
+
+					x = x + (endingX - startingX);
+					y = y + (endingY - startingY);
+
+					((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				}
-				int endingX = (int) event.getX();
-				int endingY = (int) event.getY();
-
-				x = x + endingX - startingX;
-				y = y + endingY - startingY;
-
-				((ImageView) v).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
 			}
 			if(event.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN){
 				Log.i(TAG, "second pointer detected");
@@ -153,35 +168,35 @@ public class PhotoOverlayActivity extends Activity
 		switch(v.getTag().toString()){
 			case "santa1":
 				santaImageResourceId = R.drawable.santa1;
-				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				break;
 			case "santa2":
 				santaImageResourceId = R.drawable.santa2;
-				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				break;
 			case "santa3":
 				santaImageResourceId = R.drawable.santa3;
-				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				break;
 			case "santa4":
 				santaImageResourceId = R.drawable.santa4;
-				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				break;
 			case "santa5":
 				santaImageResourceId = R.drawable.santa5;
-				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				break;
 			case "santa6":
 				santaImageResourceId = R.drawable.santa6;
-				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				break;
 			case "santa7":
 				santaImageResourceId = R.drawable.santa7;
-				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				break;
 			case "santa8":
 				santaImageResourceId = R.drawable.santa8;
-				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+				((ImageView) imageView).setImageBitmap(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 				break;
 		}
 	}
@@ -192,7 +207,7 @@ public class PhotoOverlayActivity extends Activity
 			Intent share = new Intent(Intent.ACTION_SEND);
 			share.setType("image/*");
 
-			Uri uri = getImageUri(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scaleHeight, scaleWidth));
+			Uri uri = getImageUri(drawSantaOnImage(baseImage, santaImageResourceId, x, y, scale));
 
 			share.putExtra(Intent.EXTRA_STREAM, uri);
 
